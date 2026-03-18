@@ -26,8 +26,6 @@ def perguntar_ai(texto):
 
         resultado = response.json()
 
-        print(response.text)
-
         if isinstance(resultado, list) and 'generated_text' in resultado[0]:
             return resultado[0]['generated_text']
 
