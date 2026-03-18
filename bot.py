@@ -19,16 +19,21 @@ def perguntar_ai(texto):
 
     try:
         response = requests.post(API_URL, headers=headers, json=payload, timeout=10)
+
+        if response.status_code != 200:
+            return "A IA tá dormindo agora 😴 tenta daqui a pouco"
+
         resultado = response.json()
 
-        if isinstance(resultado, list):
-            return resultado[0].get('generated_text', 'Sem resposta 😅')
+        if isinstance(resultado, list) and 'generated_text' in resultado[0]:
+            return resultado[0]['generated_text']
 
-        return "Pensando... tenta de novo 😄"
+        return "Não entendi direito 😅 tenta falar diferente"
 
     except Exception as e:
-        print(e)
+        print("ERRO:", e)
         return "Deu uma travada aqui 😅 tenta de novo"
+        
 
 async def responder(update: Update, context: ContextTypes.DEFAULT_TYPE):
     texto = update.message.text
