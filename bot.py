@@ -17,13 +17,18 @@ def perguntar_ai(texto):
         "inputs": texto
     }
 
-    response = requests.post(API_URL, headers=headers, json=payload)
-
     try:
+        response = requests.post(API_URL, headers=headers, json=payload, timeout=10)
         resultado = response.json()
-        return resultado[0]['generated_text']
-    except:
-        return "Deu ruim aqui 😅 tenta de novo"
+
+        if isinstance(resultado, list):
+            return resultado[0].get('generated_text', 'Sem resposta 😅')
+
+        return "Pensando... tenta de novo 😄"
+
+    except Exception as e:
+        print(e)
+        return "Deu uma travada aqui 😅 tenta de novo"
 
 async def responder(update: Update, context: ContextTypes.DEFAULT_TYPE):
     texto = update.message.text
