@@ -6,7 +6,8 @@ from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTyp
 TOKEN = os.getenv("TOKEN")
 HF_TOKEN = os.getenv("HF_TOKEN")
 
-API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium"
+API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-small"
+
 
 headers = {
     "Authorization": f"Bearer {HF_TOKEN}"
@@ -14,7 +15,9 @@ headers = {
 
 def perguntar_ai(texto):
     payload = {
-        "inputs": texto
+        "inputs": f"Responda de forma amigável: {texto}"
+    }
+
     }
 
     try:
@@ -24,6 +27,8 @@ def perguntar_ai(texto):
             return "A IA tá dormindo agora 😴 tenta daqui a pouco"
 
         resultado = response.json()
+
+        print(response.text)
 
         if isinstance(resultado, list) and 'generated_text' in resultado[0]:
             return resultado[0]['generated_text']
@@ -48,4 +53,4 @@ app.add_handler(MessageHandler(filters.TEXT, responder))
 
 app.run_polling()
 
-print(response.text)
+
