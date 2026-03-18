@@ -42,10 +42,10 @@ async def responder(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(resposta)
 
-print(response.text)
-
 app = ApplicationBuilder().token(TOKEN).build()
 
 app.add_handler(MessageHandler(filters.TEXT, responder))
 
 app.run_polling()
+
+print(response.text)
