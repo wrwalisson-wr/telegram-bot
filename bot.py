@@ -18,7 +18,7 @@ def perguntar_ai(texto):
         "inputs": f"Responda de forma amigável: {texto}"
     }
 
-    }
+    
 
     try:
         response = requests.post(API_URL, headers=headers, json=payload, timeout=10)
